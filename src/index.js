@@ -1,14 +1,16 @@
 const http = require('http');
 
-const UserController = require('./controllers/UserController');
-
-const users = require('./mocks/users');
+const routes = require('./routes');
 
 const server = http.createServer((request, response) => {
     console.log(`Request method: ${request.method} | Endpoint: ${request.url}`);
 
-    if(request.url === '/users' && request.method === 'GET') {
-        UserController.listUsers(request, response);
+    const route = routes.find((routeObject) => (
+        routeObject.handler === request.url && routeObject.method === request.method
+    ));
+
+    if(route) {
+        route.handler(request, response);
     } else {
         response.writeHead(400, { 'Content-Type': 'text/html' });
         response.end(`Cannot ${request.method} ${request.url}`);
