@@ -1,11 +1,11 @@
-function bodyParser() {
+function bodyParser(request, callback) {
     let body = '';
 
-        response.on('data', (chunk) => {
+        request.on('data', (chunk) => {
             body += chunk;
         });
 
-        response.on('end', () => {
+        request.on('end', () => {
             body = JSON.parse(body);
             request.body = body;
             callback();
